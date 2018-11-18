@@ -48,9 +48,25 @@ class Slot(db.Model):
 		self.start = start
 		self.end = end
 		self.duration = duration
-
+"""
 class Booking(db.Model):
 	__tablename__ = "bookings"
 	id = db.Column(db.Integer,primary_key=True)
 	user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-	slot_id = db.Column(db.Integer,db.ForeignKey("slots.id"))		
+	slot_id = db.Column(db.Integer,db.ForeignKey("slots.id"))
+	user = db.relationship("User",back_populates="users")
+	slot = db.relationship("Slot",back_populates="slots")
+"""
+class Feedback(db.Model):
+	__tablename__ = "feedbacks"
+	id = db.Column(db.Integer,primary_key=True)
+	user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+	comments = db.Column(db.String(255),nullable = True)
+	rating = db.Column(db.Enum('1','2','3','4','5'),default='5')
+	users = db.relationship("User",backref="users",lazy="joined")
+
+
+	def __init__(self,user_id,comments,rating):
+		self.comments= comments
+		self.rating = rating
+		self.user_id = user_id

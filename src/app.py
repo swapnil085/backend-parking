@@ -29,7 +29,7 @@ def sign_up():
 		gender = request.form['gender']
 		created_at = datetime.datetime.now()
 		password_hash = encrpyt.hash(password)
-		if gender == "Male":
+		if gender == "male":
 			gender = "M"
 		else:
 			gender = "F"	
@@ -57,7 +57,7 @@ def login():
 		if encrpyt.verify(password,usr.password):
 			flash("Login Successful!")
 			session["logged_in"] = True
-			return redirect(url_for("dashboard"))
+			return redirect(url_for("dashboard",user_id=usr.id))
 
 	
 	return render_template("login.html")	
@@ -77,15 +77,35 @@ def logout():
 	session.clear()
 	return redirect(url_for("login"))
 
-@app.route("/dashboard")
+@app.route("/dashboard/<int:user_id>")
 @is_logged_in
-def dashboard():
-	return render_template("dashboard.html")
+def dashboard(user_id):
+	return render_template("dashboard.html",user_id = user_id)
 
 @app.route("/book-slot",methods=["GET","POST"])
 @is_logged_in
 def book_a_slot():
 	return render_template("booking.html")	
+
+@app.route("/feedback/<int:user_id>",methods=["GET","POST"])
+@is_logged_in
+def feedback(user_id):
+	if request.method == "POST":
+		
+		rating = request.form["rating"]
+		comments = request.form["comment"]
+		feed = Feedback(user_id,comments,rating)
+		try:
+			db.session.add(feed)
+			db.session.commit()
+			flash("Feedback saved successfully","Success")
+		except:
+			db.rollback()
+			flash("Please try again","error")
+		return redirect(url_for("dashboard",user_id = user_id))
+	return render_template("feedback.html")			
+
+
 
 
 
