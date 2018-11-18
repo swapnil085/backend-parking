@@ -1,0 +1,36 @@
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<h1 align="center">Sign up</h1>
+ <form action="" method="POST">
+   <div class="form-group">
+     <label>Name : </label>
+     <input type="text" name="name" class="form-control" value={{request.form.name}}>
+   </div><br>
+   <div class="form-group">
+     <label>Email : </label>
+     <input type="text" name="email" class="form-control" value={{request.form.email}}>
+   </div><br>
+   
+   <div class="form-group">
+     <label>Password : </label>
+     <input type="password" name="password" class="form-control" value={{request.form.password}}>
+   </div><br>
+    <div class="form-group">
+     <label>Contact Number : </label>
+     <input type="text" name="contact_number" class="form-control" value={{request.form.contact_number}}>
+   </div><br>
+   <div class="form-group">
+     <label>Gender : </label>
+   <select name="gender">
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+</div>
+   <button type="submit" class="btn btn-primary">Submit</button><br><br>
+   <ul>
+   <li><a href="/">Back</a>
+     <li><a href="/login">Already registerd</a></li>
+   </ul>
+
+ </form>
