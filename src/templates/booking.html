@@ -4,18 +4,22 @@
 <h1 align="center">Slot Booking</h1><br>
  <form action="" method="POST">
 <div class="form-group">
+  <label>Car Registration Number: </label>
+  <input type="text" name="car_no" class="form-control"  value={{request.form.car_no}}>
+</div><br>
+<div class="form-group">
   <label>Date: </label>
-  <input type="text" name="email" class="form-control"  value={{request.form.email}}>
+  <input type="date" name="date" class="form-control"  value={{request.form.date}}>
 </div><br>
 <div class="form-group">
   <label>Start Time: </label>
-  <input type="text" name="start_time" class="form-control" value={{request.form.start_time}}>
+  <input type="time" name="start" class="form-control" value={{request.form.time}}>
 </div><br>
 <div class="form-group">
-  <label>Duration: </label>
-  <input type="text" name="duration" class="form-control" value={{request.form.duration}}>
+  <label>End Time: </label>
+  <input type="time" name="end" class="form-control" value={{request.form.end}}>
 </div><br>
 <button type="submit" class="btn btn-primary">Book</button><br><br>
 </form>
 <br>
-<li><a href="/sign-up"> New user register here</a></li>
+<li><a href="/dashboard/{{user_id}}"> Back</a></li>

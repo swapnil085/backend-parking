@@ -38,25 +38,39 @@ class Slot(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	slot_no = db.Column(db.Integer, nullable=False)
 	status = db.Column(db.Enum("AVAILABLE","RESERVED","OCCUPIED"),default="AVAILABLE")
+	date = db.Column(db.DateTime,nullable = False, default = datetime.datetime.now())
 	start = db.Column(db.DateTime,nullable = False, default=datetime.datetime.now())
-	end = db.Column(db.DateTime,nullable=False)
-	duration = db.Column(db.Integer,nullable=False)
+	end = db.Column(db.DateTime, nullable=False, default = datetime.datetime.now())
+	duration = db.Column(db.Integer,nullable=False,default = 0)
 
-	def __init__(self,slot_no,status,start,end,duration):
+	def __init__(self,slot_no,status,date,start,end,duration):
 		self.slot_no = slot_no
 		self.status = status
+		self.date = date
 		self.start = start
 		self.end = end
 		self.duration = duration
-"""
+
 class Booking(db.Model):
 	__tablename__ = "bookings"
 	id = db.Column(db.Integer,primary_key=True)
 	user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
 	slot_id = db.Column(db.Integer,db.ForeignKey("slots.id"))
-	user = db.relationship("User",back_populates="users")
-	slot = db.relationship("Slot",back_populates="slots")
-"""
+	car_no = db.Column(db.String(255),nullable = False)
+	reservation_no = db.Column(db.String(255),nullable = False)
+	slots = db.relationship("Slot",backref="slots",lazy="joined")
+	users = db.relationship("User",backref="bookings",lazy="joined")
+
+	def __init__(self,user_id,slot_id,car_no,reservation_no):
+		self.user_id = user_id
+		self.slot_id = slot_id
+		self.car_no = car_no
+		self.reservation_no = reservation_no
+
+
+
+
+
 class Feedback(db.Model):
 	__tablename__ = "feedbacks"
 	id = db.Column(db.Integer,primary_key=True)

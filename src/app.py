@@ -2,11 +2,11 @@ from flask import Flask, g, render_template, request , flash, redirect, url_for,
 from passlib.hash import pbkdf2_sha256 as encrpyt
 import datetime
 from functools import wraps
-
+import random
 
 app = Flask(__name__)
 app.config.from_object("config")
-
+app.secret_key = "secret"
 from models import db
 db.init_app(app)
 
@@ -17,6 +17,7 @@ from models import *
 def home():
 	return render_template("home.html")
 
+#authentication module
 #user registration
 
 @app.route('/sign-up',methods=['GET','POST'])
@@ -77,15 +78,77 @@ def logout():
 	session.clear()
 	return redirect(url_for("login"))
 
+
+
+# customer dashboard
+
+
 @app.route("/dashboard/<int:user_id>")
 @is_logged_in
 def dashboard(user_id):
 	return render_template("dashboard.html",user_id = user_id)
 
-@app.route("/book-slot",methods=["GET","POST"])
+
+
+
+
+
+
+@app.route("/book-slot/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
-def book_a_slot():
-	return render_template("booking.html")	
+def book_a_slot(user_id):
+	if request.method == "POST":
+		car_no =  request.form["car_no"]
+		date = request.form["date"]
+		date = datetime.datetime.strptime(date,"%Y-%m-%d")
+		print (date)
+		start_time = request.form["start"]
+		start_time = datetime.datetime.strptime(start_time,"%H:%M")
+		
+		end_time = request.form["end"]
+		end_time = datetime.datetime.strptime(end_time,"%H:%M")
+		
+		if start_time.day == end_time.day:
+			duration = (end_time.hour-start_time.hour)*60 + (end_time.minute-start_time.minute)
+
+		avail_slot_by_status = Slot.query.filter_by(status = "AVAILABLE").first()
+		if avail_slot_by_status is not None:
+			avail_slot_by_status.status = "RESERVED"
+			avail_slot_by_status.date = date
+			
+			avail_slot_by_status.start = start_time
+			
+			avail_slot_by_status.end = end_time
+			#slot = Slot(avail_slot.slot_no,avail_slot.status,start,end,duration)
+			avail_slot_by_status.duration = duration
+			res_no = random.randrange(1,10000,3)               
+			res_no = date.strftime("%B")[0:3]+str(res_no)		#generate reservation number
+
+			book = Booking(user_id = user_id,slot_id= avail_slot_by_status.id,car_no=car_no,reservation_no=res_no)
+			db.session.add(book)
+			db.session.commit()
+		else:
+			available_slot_by_time = Slot.query.filter_by(Slot.end <= start ).first()
+			if available_slot_by_time is None:
+				flash("No slots available!!")
+				return redirect(url_for("dashboard",user_id=user_id))
+			else:	
+				available_slot_by_time.status = "RESERVED"
+				available_slot_by_time.date = date
+				available_slot_by_time.start = start_time
+				available_slot_by_time.end = end_time
+				available_slot_by_time.duration = duration
+				book = Booking(user_id = user_id,slot_id= avail_slot_by_time.id,car_no=car_no,reservation_no=res_no)
+				db.session.add(book)
+				db.session.commit()
+
+		return redirect(url_for("dashboard",user_id = user_id))		
+	return render_template("booking.html",user_id = user_id)	
+
+
+
+
+# feedback functionality
 
 @app.route("/feedback/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
@@ -109,6 +172,8 @@ def feedback(user_id):
 
 
 
+
+#run app
 
 if __name__ == "__main__" :
 
