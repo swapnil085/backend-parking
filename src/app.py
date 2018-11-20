@@ -213,7 +213,7 @@ def admin_login():
 
 #view bookings
 
-@app.route("/<name>/bookings/<int:user_id>",methods=['GET','POST'])
+@app.route("/bookings/<name>/<int:user_id>",methods=['GET','POST'])
 @is_logged_in
 def all_bookings(name,user_id):
 	if request.method == "POST":
