@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         <h3>{{ message }}</h3>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <style>
 table {
@@ -21,25 +28,38 @@ tr:nth-child(even) {
 </style>
 </head>
 <body>
-
-<h2>Booking History</h2>
+  <br><br>
+  <form action="" method="POST">
+  <div class="form-group">
+  <label>Date: </label>
+  <input type="date" name="date" class="form-control"  value={{request.form.date}}><br>
+  <button type="submit" class="btn btn-primary">Submit</button><br><br>
+</div><br>
+</form>
+{%if name %}
+<h2>Bookings</h2>
 
 <table>
   <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Car Number</th>
     <th>Date</th>
     <th>Start Time</th>
     <th>End Time </th>
-    <th>Charges </th>
   </tr>
-  {% for b in book_history %}
+  {% for b in show_book %}
   <tr>
+    <td>{{b.name|e}}</td>
+    <td>{{b.email|e}}</td>
+    <td>{{b.car_no|e}}</td>
     <td>{{b.date|e}}</td>
-    <td>{{b.start_time|e}}</td>
-    <td>{{b.end_time|e}}</td>
-    <td>{{b.charges|e}}</td>
+    <td>{{b.start|e}}</td>
+    <td>{{b.end|e}}</td>
+    
   </tr>
   {%endfor%}
- 
+ {%endif%}
 </body><br><br>
 <button><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button>
 </html>

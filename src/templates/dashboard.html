@@ -1,10 +1,19 @@
 <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
+{% if "user" in name %}
 <li><br>
 <h2 align="center">
-<a href="/book-slot/{{user_id}}"><center>Book a Slot</center></a><br><br>
-<a href="/history/{{user_id}}"><center>History</center></a><br><br>
-<a href="/feedback/{{user_id}}"><center>Give feedback</center></a><br><br>
-<a href="/logout"><center>Logout</center></a>
+<a href="/book-slot/{{name}}/{{user_id}}"><center>Book a Slot</center></a><br><br>
+<a href="/history/{{name}}/{{user_id}}"><center>History</center></a><br><br>
+<a href="/feedback/{{name}}/{{user_id}}"><center>Give feedback</center></a><br><br>
+<a href="/logout"><center>Logout</center></a></h2>
+{% elif "admin" in name %}
+<br>
+<h2>
+<a href="/{{name}}/{{user_id}}/bookings"><center>Bookings</center></a><br><br>
+<a href="/feedbacks"><center>Customer Feedbacks</center></a><br><br>
+<a href="/logout"><center>Logout</center></a></h2>
+{% endif %}
+
 </h2>
 </li>

@@ -58,7 +58,7 @@ def login():
 		if encrpyt.verify(password,usr.password):
 			flash("Login Successful!")
 			session["logged_in"] = True
-			return redirect(url_for("dashboard",user_id=usr.id))
+			return redirect(url_for("dashboard",user_id=usr.id,name="user"))
 
 	
 	return render_template("login.html")	
@@ -76,17 +76,20 @@ def is_logged_in(f):
 @app.route('/logout',methods=["GET"])
 def logout():
 	session.clear()
-	return redirect(url_for("login"))
+	return redirect(url_for("home"))
+
+
+
 
 
 
 # customer dashboard
 
 
-@app.route("/dashboard/<int:user_id>")
+@app.route("/dashboard/<name>/<int:user_id>")
 @is_logged_in
-def dashboard(user_id):
-	return render_template("dashboard.html",user_id = user_id)
+def dashboard(user_id,name):
+	return render_template("dashboard.html",user_id = user_id,name = name)
 
 
 
@@ -94,9 +97,9 @@ def dashboard(user_id):
 
 # slot booking
 
-@app.route("/book-slot/<int:user_id>",methods=["GET","POST"])
+@app.route("/book-slot/<name>/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
-def book_a_slot(user_id):
+def book_a_slot(user_id,name):
 	if request.method == "POST":
 		car_no =  request.form["car_no"]
 		date = request.form["date"]
@@ -142,17 +145,17 @@ def book_a_slot(user_id):
 				db.session.add(book)
 				db.session.commit()
 
-		return redirect(url_for("dashboard",user_id = user_id))		
-	return render_template("booking.html",user_id = user_id)	
+		return redirect(url_for("dashboard",user_id = user_id,name = name))		
+	return render_template("booking.html",user_id = user_id,name = name)	
 
 
 
 
 # feedback functionality
 
-@app.route("/feedback/<int:user_id>",methods=["GET","POST"])
+@app.route("/feedback/<name>/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
-def feedback(user_id):
+def feedback(user_id,name):
 	if request.method == "POST":
 		
 		rating = request.form["rating"]
@@ -165,16 +168,16 @@ def feedback(user_id):
 		except:
 			db.rollback()
 			flash("Please try again","error")
-		return redirect(url_for("dashboard",user_id = user_id))
+		return redirect(url_for("dashboard",user_id = user_id,name=name))
 	return render_template("feedback.html")			
 
 
 
 
 # view history
-@app.route("/history/<int:user_id>",methods=["GET","POST"])
+@app.route("/history/<name>/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
-def history(user_id):
+def history(user_id,name):
 	bookings = Booking.query.filter_by(user_id = user_id).all()
 	book_history=[]
 	for b in bookings:
@@ -182,10 +185,69 @@ def history(user_id):
 			"date" : b.slots.date.strftime("%Y-%m-%d"),
 			"start_time" : b.slots.start.strftime("%H:%M"),
 			"end_time" : b.slots.end.strftime("%H:%M"),
-			"charges" : 0
+			"charges" : 100
 		}
 		book_history.append(history_dict)
-	return render_template("history.html",book_history = book_history)
+	return render_template("history.html",book_history = book_history,name=name,user_id=user_id)
+
+# -------------------------------------------------------------------------------------------------------
+
+
+# admin login 
+
+@app.route("/admin-login",methods=['GET','POST'])
+def admin_login():
+	if request.method == "POST":
+		username = request.form["username"]
+		password = request.form["password"]
+		admin = Admin.query.filter_by(username = username).first()
+		if admin is None:
+			flash("Invalid Credentials!")
+			return redirect(url_for("admin_login"))
+		elif encrpyt.verify(password,admin.password):
+			flash("Login Successful!")
+			session["logged_in"] = True
+			return redirect(url_for("dashboard",user_id = admin.id,name = "admin"))
+	return render_template("admin_login.html")	
+
+
+#view bookings
+
+@app.route("/<name>/bookings/<int:user_id>",methods=['GET','POST'])
+@is_logged_in
+def all_bookings(name,user_id):
+	if request.method == "POST":
+		date = request.form["date"]
+		date = datetime.datetime.strptime(date,"%Y-%m-%d")
+		all_bookings = Booking.query.join(Slot , Booking.slot_id == Slot.id).filter(Slot.date == date).all()
+		print (len(all_bookings))
+		#all_slots = Slot.query.filter_by(date = date)
+		show_book = []
+		if all_bookings is not None:
+			for s in all_bookings:
+				#customer_id = s.user_id
+				#customer = User.query.filter_by(id = customer_id).first()
+				d={
+					"name":s.users.name,
+					"car_no":s.car_no,
+					"email":s.users.email,
+					"date":s.slots.date.strftime("%Y-%m-%d"),
+					"start":s.slots.start.strftime("%H:%M"),
+					"end":s.slots.end.strftime("%H:%M")
+
+				}
+				show_book.append(d)
+			return render_template("view_bookings.html",show_book = show_book,name=name,user_id = user_id)	
+		else:
+			flash("No bookings on the selected date !!")
+			return render_template("view_bookings.html")
+	return render_template("view_bookings.html")
+
+
+#Add / Remove slots
+#@app.route('/slots/<name>/<int:user_id>',methods=["GET",""])
+
+
 
 
 

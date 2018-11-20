@@ -14,6 +14,7 @@ class User(db.Model):
 	gender = db.Column(db.Enum('M','F'), default = 'M')
 	password = db.Column(db.String(255), nullable = False)
 	created_at = db.Column(db.DateTime, nullable = False, default = datetime.datetime.now)
+	bookings = db.relationship("Booking",back_populates="users")
 
 	def __init__(self,name,email,contact_number,gender,password,created_at):
 		self.name = name
@@ -33,6 +34,19 @@ class User(db.Model):
 		else:
 			return False	
 
+class Admin(db.Model):
+	__tablename__ = "admins"
+	id = db.Column(db.Integer,nullable = False,primary_key=True)
+	username = db.Column(db.String(255),nullable = False)
+	password = db.Column(db.String(255),nullable = False)
+
+	def __init__(self,username,password):
+		self.username = username
+		self.password = password
+
+
+
+
 class Slot(db.Model):
 	__tablename__ = "slots"
 	id = db.Column(db.Integer,primary_key=True)
@@ -42,6 +56,7 @@ class Slot(db.Model):
 	start = db.Column(db.DateTime,nullable = False, default=datetime.datetime.now())
 	end = db.Column(db.DateTime, nullable=False, default = datetime.datetime.now())
 	duration = db.Column(db.Integer,nullable=False,default = 0)
+	bookings = db.relationship("Booking",back_populates="slots")
 
 	def __init__(self,slot_no,status,date,start,end,duration):
 		self.slot_no = slot_no
@@ -58,8 +73,8 @@ class Booking(db.Model):
 	slot_id = db.Column(db.Integer,db.ForeignKey("slots.id"))
 	car_no = db.Column(db.String(255),nullable = False)
 	reservation_no = db.Column(db.String(255),nullable = False)
-	slots = db.relationship("Slot",backref="slots",lazy="joined")
-	users = db.relationship("User",backref="bookings",lazy="joined")
+	slots= db.relationship("Slot",back_populates="bookings")
+	users = db.relationship("User",back_populates="bookings")
 
 	def __init__(self,user_id,slot_id,car_no,reservation_no):
 		self.user_id = user_id
