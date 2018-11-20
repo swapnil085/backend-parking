@@ -92,7 +92,7 @@ def dashboard(user_id):
 
 
 
-
+# slot booking
 
 @app.route("/book-slot/<int:user_id>",methods=["GET","POST"])
 @is_logged_in
@@ -170,6 +170,22 @@ def feedback(user_id):
 
 
 
+
+# view history
+@app.route("/history/<int:user_id>",methods=["GET","POST"])
+@is_logged_in
+def history(user_id):
+	bookings = Booking.query.filter_by(user_id = user_id).all()
+	book_history=[]
+	for b in bookings:
+		history_dict = {
+			"date" : b.slots.date.strftime("%Y-%m-%d"),
+			"start_time" : b.slots.start.strftime("%H:%M"),
+			"end_time" : b.slots.end.strftime("%H:%M"),
+			"charges" : 0
+		}
+		book_history.append(history_dict)
+	return render_template("history.html",book_history = book_history)
 
 
 

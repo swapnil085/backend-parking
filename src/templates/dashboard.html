@@ -1,44 +1,9 @@
 <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
-<!--
-<div class="container">
-<h1>Welcome    <small><u>{{session.email}} </u></small></h1><br>
-<body>
-  
-{% with messages = get_flashed_messages() %}
-   {% if messages %}
-      {% for message in messages %}
-         {{ message }}
-      {% endfor %}
-   {% endif %}
-{% endwith %}
-
-<table border="3" class="table">
-{% for name in names %}
-  <tr>
-    <td>
-    <ul>
-      <li><a href="/dashboard/{{name}}">{{name}}</a></li>
-    </ul>
-  </td>
-  </tr>
-  {% endfor %}
-</table>
-<br><br>
-<form action="" method="POST">
-<div class="form-group">
- <label>Currency : </label>
- <input type="text" name="favourite" class="form-control" placeholder="Currency"value={{request.form.favourite}}>&nbsp; &nbsp;<br>
- <button type="submit" class="btn btn-primary">Add Favourite</button><br>
-</div>
-
-</form><br>
-<li><a href="/dashboard/show">Show Favourites</a></li><br>
--->
 <li><br>
 <h2 align="center">
 <a href="/book-slot/{{user_id}}"><center>Book a Slot</center></a><br><br>
-<a href="/history"><center>History</center></a><br><br>
+<a href="/history/{{user_id}}"><center>History</center></a><br><br>
 <a href="/feedback/{{user_id}}"><center>Give feedback</center></a><br><br>
 <a href="/logout"><center>Logout</center></a>
 </h2>
