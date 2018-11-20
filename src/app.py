@@ -245,8 +245,34 @@ def all_bookings(name,user_id):
 
 
 #Add / Remove slots
-#@app.route('/slots/<name>/<int:user_id>',methods=["GET",""])
+@app.route('/add-slots/<name>/<int:user_id>',methods=["GET","POST"])
+@is_logged_in
+def add_slots(name,user_id):
+	if request.method == "POST":
+		last_slot = Slot.query.order_by(Slot.id.desc()).first()
+		last_slot_no = last_slot.slot_no
+		print(last_slot_no)
+		no_of_slots = request.form["no_of_slots"]
+		no_of_slots = int(no_of_slots)
+		for i in range(no_of_slots):
+			last_slot_no = last_slot_no+1
+			slot = Slot(slot_no=last_slot_no,status="AVAILABLE",date=datetime.datetime.now(),start=datetime.datetime.now(),end=datetime.datetime.now(),duration=0)
+			db.session.add(slot)
+		db.session.commit()
+		return render_template("slots.html",name=name,user_id=user_id,task = "add")
+	return render_template("slots.html",name=name,user_id=user_id,task = "add")		
 
+@app.route('/remove-slots/<name>/<int:user_id>',methods=["GET","POST"])
+@is_logged_in
+def remove_slots(name,user_id):
+	if request.method == "POST":
+		slot_no = request.form["slot_no"]
+		slot_no = int(slot_no)
+		slot = Slot.query.filter_by(slot_no = slot_no).first()
+		db.session.delete(slot)
+		db.session.commit()
+		return render_template("slots.html",name=name,user_id=user_id,task="remove")
+	return render_template("slots.html",name=name,user_id=user_id,task="remove")
 
 
 
