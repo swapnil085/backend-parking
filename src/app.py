@@ -274,7 +274,13 @@ def remove_slots(name,user_id):
 		return render_template("slots.html",name=name,user_id=user_id,task="remove")
 	return render_template("slots.html",name=name,user_id=user_id,task="remove")
 
+#view feedbacks
 
+@app.route('/feedbacks/<name>/<int:user_id>')
+@is_logged_in
+def view_feedbacks(name,user_id):
+	feedbacks = Feedback.query.all()
+	return render_template("view_feedbacks.html",feedbacks = feedbacks,name=name,user_id=user_id)
 
 
 #run app
