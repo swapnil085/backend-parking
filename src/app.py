@@ -122,7 +122,6 @@ def book_a_slot(user_id,name):
 			avail_slot_by_status.start = start_time
 			
 			avail_slot_by_status.end = end_time
-			#slot = Slot(avail_slot.slot_no,avail_slot.status,start,end,duration)
 			avail_slot_by_status.duration = duration
 			res_no = random.randrange(1,10000,3)               
 			res_no = date.strftime("%B")[0:3]+str(res_no)		#generate reservation number
@@ -189,6 +188,9 @@ def history(user_id,name):
 		}
 		book_history.append(history_dict)
 	return render_template("history.html",book_history = book_history,name=name,user_id=user_id)
+
+
+
 
 # -------------------------------------------------------------------------------------------------------
 
@@ -276,12 +278,87 @@ def remove_slots(name,user_id):
 
 #view feedbacks
 
-@app.route('/feedbacks/<name>/<int:user_id>')
+@app.route('/feedbacks/<name>/<int:user_id>',methods=["GET"])
 @is_logged_in
 def view_feedbacks(name,user_id):
 	feedbacks = Feedback.query.all()
 	return render_template("view_feedbacks.html",feedbacks = feedbacks,name=name,user_id=user_id)
 
+
+
+#-----------------------------------------------------------------------------------------------------------
+
+#                Garage access control
+
+@app.route("/guard-login",methods=["GET",'POST'])
+def guard_login():
+	if request.method == "POST":
+		username = request.form["username"]
+		password = request.form["password"]
+		guard = Guard.query.filter_by(username = username).first()
+		if guard is None:
+			flash("Invalid Credentials!")
+			return redirect(url_for("guard_login"))
+		elif encrpyt.verify(password,guard.password):
+			flash("Login Successful!")
+			session["logged_in"] = True
+			return redirect(url_for("guard_dashboard"))
+	return render_template("guard_login.html")
+
+@app.route("/guard",methods=["GET","POST"])
+@is_logged_in
+def guard_dashboard():
+	return render_template("guard_dashboard.html")
+
+@app.route("/entry",methods=["GET","POST"])
+@is_logged_in
+def entry():
+	if request.method == "POST":
+		type_customer = request.form["type_customer"]
+		if type_customer == "registered":
+			return(redirect(url_for("entry_registered")))
+		else:
+			return redirect(url_for("entry_walk_in"))
+
+	return render_template("entry.html",type_customer="x")
+
+@app.route("/entry/registered",methods=["GET",'POST'])
+@is_logged_in
+def entry_registered():
+	if request.method == "POST":
+		res_no = request.form["res_no"]
+		booking = Booking.query.filter_by(reservation_no = res_no).first()
+		if booking is not None:
+			booking.slots.status = "OCCUPIED"
+			db.session.commit()
+			return redirect(url_for("entry"))
+		else:
+			flash("Invalid reservation number!!")
+			return render_template("entry.html")
+	return render_template("entry.html",type_customer = "registered")
+
+@app.route("/entry/walk_in",methods=["GET","POST"])
+@is_logged_in
+def entry_walk_in():
+	if request.method == "POST":
+		car_no = request.form["car_no"]
+		email = request.form["email"]
+		exit_time = request.form["exit_time"]
+		exit_time = datetime.datetime.strptime(exit_time,"%H:%M")
+		avail_slot_by_status = Slot.query.filter_by(status = "AVAILABLE").first()
+		if avail_slot_by_status is not None:
+			avail_slot_by_status.status = "OCCUPIED"
+			avail_slot_by_status.date = datetime.datetime.now()
+			avail_slot_by_status.start = datetime.datetime.now()
+			avail_slot_by_status.end = exit_time
+			duration = (exit_time.hour-avail_slot_by_status.start.hour)*60 + (exit_time.minute-avail_slot_by_status.start.minute)
+			res_no = random.randrange(1,10000,3)               
+			res_no = avail_slot_by_status.date.strftime("%B")[0:3]+str(res_no)
+			walk_in = Walk_in(email=email,reservation_no=res_no,car_no=car_no,slot_id=avail_slot_by_status.id)
+			db.session.add(walk_in)
+			db.session.commit()
+			return(redirect(url_for("entry")))
+	return render_template("entry.html",type_customer="walk_in")		
 
 #run app
 

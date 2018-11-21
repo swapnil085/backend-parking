@@ -99,3 +99,47 @@ class Feedback(db.Model):
 		self.comments= comments
 		self.rating = rating
 		self.user_id = user_id
+
+class Guard(db.Model):
+	__tablename__ = "guards"
+	id = db.Column(db.Integer,primary_key=True)
+	username = db.Column(db.String(255),nullable=True)
+	password = db.Column(db.String(255),nullable=True)
+
+	def __init__(self,username,password):
+		self.username = username
+		self.password = password
+
+class Walk_in(db.Model):
+	__tablename__ = "walkins"
+	id = db.Column(db.Integer,primary_key=True)
+	email = db.Column(db.String(255),nullable=False)
+	reservation_no = db.Column(db.String(255),nullable=False)
+	car_no = db.Column(db.String(255),nullable=False)
+	slot_id = db.Column(db.Integer,db.ForeignKey("slots.id"))
+	slots = db.relationship("Slot",backref="book")
+
+	def __init__(self,email,reservation_no,car_no,slot_id):
+		self.email = email
+		self.reservation_no = reservation_no
+		self.car_no = car_no
+		self.slot_id = slot_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

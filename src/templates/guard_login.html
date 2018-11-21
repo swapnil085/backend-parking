@@ -1,0 +1,19 @@
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<h1 align="center">Guard Login</h1><br>
+ <form action="" method="POST">
+<div class="form-group">
+  <label>Username : </label>
+  <input type="text" name="username" class="form-control"  value={{request.form.username}}>
+</div><br>
+<div class="form-group">
+  <label>Password : </label>
+  <input type="password" name="password" class="form-control" value={{request.form.password}}>
+</div><br>
+<button type="submit" class="btn btn-primary">Submit</button><br><br>
+</form>
+<br>
+<p align="center">
+<button><a href="/home"> Home</a></button>
+</p>
