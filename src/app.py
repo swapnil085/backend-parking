@@ -360,6 +360,39 @@ def entry_walk_in():
 			return(redirect(url_for("entry")))
 	return render_template("entry.html",type_customer="walk_in")		
 
+
+@app.route("/exit",methods=["GET","POST"])
+@is_logged_in
+def exit():
+	if request.method == "POST":
+		reservation_no = request.form["reservation_no"]
+		car_no = request.form["car_no"]
+		
+		booking = Booking.query.filter((reservation_no == reservation_no) | (car_no == car_no)).first()
+		if booking is None:
+			print("Hello")
+			walk_in = Walk_in.query.filter((reservation_no == reservation_no) | (car_no == car_no)).first()
+			walk_in.slots.status = "AVAILABLE"
+			walk_in.slots.start = datetime.datetime.now()
+			walk_in.slots.end = datetime.datetime.now()
+			walk_in.slots.duration = 0
+			db.session.delete(walk_in)
+		else:	
+			print("Hello")
+			booking.slots.status = "AVAILABLE"
+			booking.slots.start = datetime.datetime.now()
+			booking.slots.end = datetime.datetime.now()
+			booking.slots.duration = 0
+			db.session.delete(booking)
+
+		db.session.commit()
+		return redirect(url_for("exit"))
+	return render_template("exit.html")	
+
+
+
+
+
 #run app
 
 if __name__ == "__main__" :
