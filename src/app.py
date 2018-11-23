@@ -3,12 +3,14 @@ from passlib.hash import pbkdf2_sha256 as encrpyt
 import datetime
 from functools import wraps
 import random
+from flask_mail import Mail,Message
 
 app = Flask(__name__)
 app.config.from_object("config")
 app.secret_key = "secret"
 from models import db
 db.init_app(app)
+
 
 from models import *
 
@@ -168,7 +170,7 @@ def feedback(user_id,name):
 			db.rollback()
 			flash("Please try again","error")
 		return redirect(url_for("dashboard",user_id = user_id,name=name))
-	return render_template("feedback.html")			
+	return render_template("feedback.html",name=name,user_id=user_id)			
 
 
 
