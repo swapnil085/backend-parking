@@ -244,8 +244,8 @@ def all_bookings(name,user_id):
 			return render_template("view_bookings.html",show_book = show_book,name=name,user_id = user_id)	
 		else:
 			flash("No bookings on the selected date !!")
-			return render_template("view_bookings.html")
-	return render_template("view_bookings.html")
+			return render_template("view_bookings.html",name=name,user_id=user_id)
+	return render_template("view_bookings.html",name = name,user_id=user_id)
 
 
 #Add / Remove slots
