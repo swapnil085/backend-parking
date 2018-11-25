@@ -3,7 +3,7 @@ from passlib.hash import pbkdf2_sha256 as encrpyt
 import datetime
 from functools import wraps
 import random
-from flask_mail import Mail,Message
+
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -192,6 +192,21 @@ def history(user_id,name):
 	return render_template("history.html",book_history = book_history,name=name,user_id=user_id)
 
 
+@app.route("/cancel-booking/<name>/<user_id>",methods=["GET","POST"])
+@is_logged_in
+def cancel_booking(name,user_id):
+	if request.method == "POST":
+		res_no = request.form["res_no"]
+		booking = Booking.query.filter_by(reservation_no = res_no).first()
+		if booking is not None:
+			booking.slots.status = "AVAILABLE"
+			db.session.delete(booking)
+			flash("Booking canceled successfully!!")
+		else:
+			flash("Invalid reservation number!!")	
+		db.session.commit()
+		return redirect(url_for("dashboard",user_id = user_id,name=name))
+	return render_template("cancel_booking.html",name=name,user_id=user_id)		
 
 
 # -------------------------------------------------------------------------------------------------------
