@@ -1,5 +1,25 @@
 {% if "add" in task %}
+<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
 
+<style>
+body{background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); background-repeat:no-repeat;  background-size:cover 100%; } 
+h2{
+	font-size:40px;
+}
+label{
+  font-size:30px;
+}
+input[type=text]{
+  width:300px;
+  align :center;
+  background-color: #B0C4DE;
+}
+button[type=submit]{
+   box-shadow: 0 5px #666;
+}
+
+</style>
 
 <h2 align="center">Add Slots</h2><br>
  <form action="" method="POST">
@@ -13,7 +33,33 @@
 <p align="center">
 <button><a href="/dashboard/{{name}}/{{user_id}}"> Admin Dashboard</a></button><br><br>
 </p>
+
+
+
 {%elif "remove" in task %}
+
+<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<style>
+body{background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); background-repeat:no-repeat;  background-size:cover 100%; } 
+h2{
+	font-size:40px;
+}
+label{
+  font-size:30px;
+}
+input[type=text]{
+  width:300px;
+  align :center;
+  background-color: #B0C4DE;
+}
+button[type=submit]{
+   box-shadow: 0 5px #666;
+}
+
+</style>
+
 <h2 align="center">Remove Slot</h2><br>
  <form action="" method="POST">
 <div class="form-group">

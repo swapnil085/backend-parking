@@ -1,0 +1,29 @@
+{% if "add" in task %}
+
+
+<h2 align="center">Add Slots</h2><br>
+ <form action="" method="POST">
+<div class="form-group">
+  <label>How many : </label>
+  <input type="text" name="no_of_slots" class="form-control"  value={{request.form.no_of_slots}}><br><br>
+  <button type="submit" class="btn btn-primary">Add</button><br><br>
+</form>
+</div><br>
+</form>
+<p align="center">
+<button><a href="/dashboard/{{name}}/{{user_id}}"> Admin Dashboard</a></button><br><br>
+</p>
+{%elif "remove" in task %}
+<h2 align="center">Remove Slot</h2><br>
+ <form action="" method="POST">
+<div class="form-group">
+  <label>Slot number : </label>
+  <input type="text" name="slot_no" class="form-control"  value={{request.form.slots_no}}><br><br>
+  <button type="submit" class="btn btn-primary">Remove</button><br><br>
+</form>
+</div><br>
+</form>
+<p align="center">
+<button><a href="/dashboard/{{name}}/{{user_id}}"> Admin Dashboard</a></button><br><br>
+</p>
+{% endif %}

@@ -1,0 +1,25 @@
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<h1 align="center">Slot Booking</h1><br>
+ <form action="" method="POST">
+<div class="form-group">
+  <label>Car Registration Number: </label>
+  <input type="text" name="car_no" class="form-control"  value={{request.form.car_no}}>
+</div><br>
+<div class="form-group">
+  <label>Date: </label>
+  <input type="date" name="date" class="form-control"  value={{request.form.date}}>
+</div><br>
+<div class="form-group">
+  <label>Start Time: </label>
+  <input type="time" name="start" class="form-control" value={{request.form.time}}>
+</div><br>
+<div class="form-group">
+  <label>End Time: </label>
+  <input type="time" name="end" class="form-control" value={{request.form.end}}>
+</div><br>
+<button type="submit" class="btn btn-primary">Book</button><br><br>
+</form>
+<br>
+<button><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button>

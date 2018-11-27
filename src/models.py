@@ -13,7 +13,7 @@ class User(db.Model):
 	contact_number = db.Column(db.String(255), nullable = False)
 	gender = db.Column(db.Enum('M','F'), default = 'M')
 	password = db.Column(db.String(255), nullable = False)
-	created_at = db.Column(db.DateTime, nullable = False, default = datetime.datetime.now)
+	created_at = db.Column(db.DateTime, nullable = False, default = datetime.datetime.now())
 	bookings = db.relationship("Booking",back_populates="users")
 
 	def __init__(self,name,email,contact_number,gender,password,created_at):
@@ -34,6 +34,9 @@ class User(db.Model):
 		else:
 			return False	
 
+	def __str__(self):
+		return self.name
+
 class Admin(db.Model):
 	__tablename__ = "admins"
 	id = db.Column(db.Integer,nullable = False,primary_key=True)
@@ -44,6 +47,8 @@ class Admin(db.Model):
 		self.username = username
 		self.password = password
 
+	def __str__(self):
+		return self.username
 
 
 
@@ -66,6 +71,9 @@ class Slot(db.Model):
 		self.end = end
 		self.duration = duration
 
+	def __str__(self):
+		return self.slot_no	
+
 class Booking(db.Model):
 	__tablename__ = "bookings"
 	id = db.Column(db.Integer,primary_key=True)
@@ -82,7 +90,8 @@ class Booking(db.Model):
 		self.car_no = car_no
 		self.reservation_no = reservation_no
 
-
+	def __str__(self):
+		return self.car_no
 
 
 
@@ -100,6 +109,9 @@ class Feedback(db.Model):
 		self.rating = rating
 		self.user_id = user_id
 
+	def __str__(self):
+		return self.comments
+
 class Guard(db.Model):
 	__tablename__ = "guards"
 	id = db.Column(db.Integer,primary_key=True)
@@ -109,6 +121,9 @@ class Guard(db.Model):
 	def __init__(self,username,password):
 		self.username = username
 		self.password = password
+
+	def __str__(self):
+		return self.username
 
 class Walk_in(db.Model):
 	__tablename__ = "walkins"
@@ -125,7 +140,8 @@ class Walk_in(db.Model):
 		self.car_no = car_no
 		self.slot_id = slot_id
 
-
+	def __str__(self):
+		return self.slot_id
 
 
 

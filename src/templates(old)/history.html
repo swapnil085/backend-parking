@@ -2,16 +2,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-</head>
-
 <style>
-body{background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); background-repeat:no-repeat;  background-size:cover; } 
-h2{
-  font-size:40px;
-  text-align: center;
-}
-
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -27,12 +18,11 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
-
 </style>
-
+</head>
 <body>
 
-<h2>Booking History</h2><br><br><br>
+<h2>Booking History</h2>
 
 <table>
   <tr>
@@ -49,9 +39,7 @@ tr:nth-child(even) {
     <td>{{b.charges|e}}</td>
   </tr>
   {%endfor%}
-</table><br><br><br><br><br> 
-
-<button type="back" ><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button> 
+ 
 </body><br><br>
-
+<button><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button>
 </html>

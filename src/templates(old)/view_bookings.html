@@ -10,25 +10,6 @@
 {% endwith %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <style>
-body{background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); background-repeat:no-repeat;  background-size:cover 100%; } 
-
-label{
-  font-size:40px;
-}
-input[type=date]{
-  width:300px;
-  align :center;
-  background-color: #B0C4DE;
-}
-button[type=submit]{
-   box-shadow: 0 5px #666;
-}
-
-
-h2{
-  font-size:50px;
-}
-
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -36,13 +17,13 @@ table {
 }
 
 td, th {
-    border: 1px solid #010000;
+    border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
 }
 
 tr:nth-child(even) {
-    background-color: #010000;
+    background-color: #dddddd;
 }
 </style>
 </head>
@@ -77,13 +58,8 @@ tr:nth-child(even) {
     <td>{{b.end|e}}</td>
     
   </tr>
-
   {%endfor%}
  {%endif%}
-</table><br><br><br><br>
-
-<br>
-<button><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button> 
 </body><br><br>
-
+<button><a href="/dashboard/{{name}}/{{user_id}}"> Back</a></button>
 </html>
