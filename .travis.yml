@@ -3,9 +3,9 @@ language: python
 python: 3.6.6
 
 script: 
-  - python .src/manage.py db init
-  - python .src/manage.py db migrate
-  - python .src/manage.py db upgrade
+  - python ~backend-parking/src/manage.py db init
+  - python ~backend-parking/src/manage.py db migrate
+  - python ~backend-parking/src/manage.py db upgrade
   - pytest
-  - python .src/app.py
+  - python ~backend-parking/src/app.py
 
