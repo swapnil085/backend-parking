@@ -2,10 +2,10 @@ language: python
 
 python: 3.6.6
 
-script: 
-  - python ~backend-parking/src/manage.py db init
-  - python ~backend-parking/src/manage.py db migrate
-  - python ~backend-parking/src/manage.py db upgrade
+before_install: 
+  - python /src/manage.py db init
+  - python /src/manage.py db migrate
+  - python /src/manage.py db upgrade
   - pytest
-  - python ~backend-parking/src/app.py
+  - python /src/app.py
 
