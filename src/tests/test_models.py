@@ -1,4 +1,4 @@
-import requests
+
 import datetime
 from src.models import *
 
