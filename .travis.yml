@@ -2,7 +2,7 @@ language: python
 
 python: 3.6.6
 
+before_install: "pip -r requirements.txt"
 
-
-script: pytest
+script: "pytest"s
 
