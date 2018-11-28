@@ -2,10 +2,7 @@ language: python
 
 python: 3.6.6
 
-before_install: 
-  - python /src/manage.py db init
-  - python /src/manage.py db migrate
-  - python /src/manage.py db upgrade
-  - pytest
-  - python /src/app.py
+before_install: pip -r requirements.txt 
+
+script: pytest
 
