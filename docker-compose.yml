@@ -1,6 +1,6 @@
 web:
   build: .
-  command: bash -c "python ./src/manage.py db migrate && python ./src/manage.py db upgrade && python ./src/app.py"
+  command: bash -c " pip install -r requirements.txt && python ./src/manage.py db migrate && python ./src/manage.py db upgrade && python ./src/app.py"
   container_name: backend-parking
   volumes:
    - .:/src
@@ -13,6 +13,8 @@ db:
   container_name: parking_database
   hostname: localhost
   image: mysql:5.7.18
+  ports:
+    - "32000:3306"
   environment:
      MYSQL_ROOT_PASSWORD: 123456
      MYSQL_PASSWORD: 123456
