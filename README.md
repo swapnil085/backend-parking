@@ -8,13 +8,14 @@ A automated parking system built using :
 
 # Installation
 
-1. Install virtual environment using `pip install virtualenv`.
-2. `cd backend-parking`.
-3. `source venv/bin/activate` to activate virtual environment.
-4. Install all the requirements using `pip install -r requirements.txt`.
-5. Navigate to souce directory using `cd Desktop`.
-6. Type `python app.py` to start the flask server.
-7. Navigate to `https://locahost:5000` in your browser to visit the web app.
+1. To clone the repository : `https://github.com/swapnil085/backend-parking.git`. 
+2. Install virtual environment using `pip install virtualenv`.
+3. `cd backend-parking`.
+4. `source venv/bin/activate` to activate virtual environment.
+5. Install all the requirements using `pip install -r requirements.txt`.
+6. Navigate to souce directory using `cd Desktop`.
+7. Type `python app.py` to start the flask server.
+8. Navigate to `https://locahost:5000` in your browser to visit the web app.
 
 # Docker
 
