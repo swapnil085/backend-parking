@@ -5,7 +5,7 @@ services: docker
 
 script: 
   - "pytest"
-  - "docker-compose up"
+  - docker-compose up
 
- after_install:
-  - "docker-compose stop" 
+after_install:
+  - docker-compose stop 
