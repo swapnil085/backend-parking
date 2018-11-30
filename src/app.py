@@ -132,7 +132,7 @@ def book_a_slot(user_id,name):
 			db.session.add(book)
 			db.session.commit()
 		else:
-			available_slot_by_time = Slot.query.filter_by(Slot.end <= start ).first()
+			available_slot_by_time = Slot.query.filter_by(Slot.end <= start_time ).first()
 			if available_slot_by_time is None:
 				flash("No slots available!!")
 				return redirect(url_for("dashboard",user_id=user_id))
