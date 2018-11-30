@@ -3,9 +3,9 @@ language: python
 python: 3.6.6
 services: docker
 
-script: 
-  - "pytest"
+before_install: 
   - docker-compose up
-
+script:
+  - "pytest"
 after_install:
   - docker-compose stop 
