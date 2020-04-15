@@ -35,7 +35,7 @@ def sign_up():
 		if gender == "male":
 			gender = "M"
 		else:
-			gender = "F"	
+			gender = "F"
 		usr = User(name = name,email= email,contact_number= contact_number,password= password_hash,
 					gender= gender,created_at= created_at)
 		try:
@@ -45,10 +45,10 @@ def sign_up():
 		except:
 			db.rollback()
 			flash("Please try again","error")
-		
+
 		return redirect(url_for("home"))
 
-	return render_template("sign_up.html")			
+	return render_template("sign_up.html")
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -62,8 +62,8 @@ def login():
 			session["logged_in"] = True
 			return redirect(url_for("dashboard",user_id=usr.id,name="user"))
 
-	
-	return render_template("login.html")	
+
+	return render_template("login.html")
 
 def is_logged_in(f):
     @wraps(f)
@@ -109,10 +109,10 @@ def book_a_slot(user_id,name):
 		print (date)
 		start_time = request.form["start"]
 		start_time = datetime.datetime.strptime(start_time,"%H:%M")
-		
+
 		end_time = request.form["end"]
 		end_time = datetime.datetime.strptime(end_time,"%H:%M")
-		
+
 		if start_time.day == end_time.day:
 			duration = (end_time.hour-start_time.hour)*60 + (end_time.minute-start_time.minute)
 
@@ -120,12 +120,12 @@ def book_a_slot(user_id,name):
 		if avail_slot_by_status is not None:
 			avail_slot_by_status.status = "RESERVED"
 			avail_slot_by_status.date = date
-			
+
 			avail_slot_by_status.start = start_time
-			
+
 			avail_slot_by_status.end = end_time
 			avail_slot_by_status.duration = duration
-			res_no = random.randrange(1,10000,3)               
+			res_no = random.randrange(1,10000,3)
 			res_no = date.strftime("%B")[0:3]+str(res_no)		#generate reservation number
 
 			book = Booking(user_id = user_id,slot_id= avail_slot_by_status.id,car_no=car_no,reservation_no=res_no)
@@ -136,7 +136,7 @@ def book_a_slot(user_id,name):
 			if available_slot_by_time is None:
 				flash("No slots available!!")
 				return redirect(url_for("dashboard",user_id=user_id))
-			else:	
+			else:
 				available_slot_by_time.status = "RESERVED"
 				available_slot_by_time.date = date
 				available_slot_by_time.start = start_time
@@ -146,8 +146,8 @@ def book_a_slot(user_id,name):
 				db.session.add(book)
 				db.session.commit()
 
-		return redirect(url_for("dashboard",user_id = user_id,name = name))		
-	return render_template("booking.html",user_id = user_id,name = name)	
+		return redirect(url_for("dashboard",user_id = user_id,name = name))
+	return render_template("booking.html",user_id = user_id,name = name)
 
 
 
@@ -158,7 +158,7 @@ def book_a_slot(user_id,name):
 @is_logged_in
 def feedback(user_id,name):
 	if request.method == "POST":
-		
+
 		rating = request.form["rating"]
 		comments = request.form["comment"]
 		feed = Feedback(user_id,comments,rating)
@@ -170,7 +170,7 @@ def feedback(user_id,name):
 			db.rollback()
 			flash("Please try again","error")
 		return redirect(url_for("dashboard",user_id = user_id,name=name))
-	return render_template("feedback.html",name=name,user_id=user_id)			
+	return render_template("feedback.html",name=name,user_id=user_id)
 
 
 
@@ -203,16 +203,16 @@ def cancel_booking(name,user_id):
 			db.session.delete(booking)
 			flash("Booking canceled successfully!!")
 		else:
-			flash("Invalid reservation number!!")	
+			flash("Invalid reservation number!!")
 		db.session.commit()
 		return redirect(url_for("dashboard",user_id = user_id,name=name))
-	return render_template("cancel_booking.html",name=name,user_id=user_id)		
+	return render_template("cancel_booking.html",name=name,user_id=user_id)
 
 
 # -------------------------------------------------------------------------------------------------------
 
 
-# admin login 
+# admin login
 
 @app.route("/admin-login",methods=['GET','POST'])
 def admin_login():
@@ -220,6 +220,7 @@ def admin_login():
 		username = request.form["username"]
 		password = request.form["password"]
 		admin = Admin.query.filter_by(username = username).first()
+		print(admin.password)
 		if admin is None:
 			flash("Invalid Credentials!")
 			return redirect(url_for("admin_login"))
@@ -227,7 +228,7 @@ def admin_login():
 			flash("Login Successful!")
 			session["logged_in"] = True
 			return redirect(url_for("dashboard",user_id = admin.id,name = "admin"))
-	return render_template("admin_login.html")	
+	return render_template("admin_login.html")
 
 
 #view bookings
@@ -256,7 +257,7 @@ def all_bookings(name,user_id):
 
 				}
 				show_book.append(d)
-			return render_template("view_bookings.html",show_book = show_book,name=name,user_id = user_id)	
+			return render_template("view_bookings.html",show_book = show_book,name=name,user_id = user_id)
 		else:
 			flash("No bookings on the selected date !!")
 			return render_template("view_bookings.html",name=name,user_id=user_id)
@@ -279,7 +280,7 @@ def add_slots(name,user_id):
 			db.session.add(slot)
 		db.session.commit()
 		return render_template("slots.html",name=name,user_id=user_id,task = "add")
-	return render_template("slots.html",name=name,user_id=user_id,task = "add")		
+	return render_template("slots.html",name=name,user_id=user_id,task = "add")
 
 @app.route('/remove-slots/<name>/<int:user_id>',methods=["GET","POST"])
 @is_logged_in
@@ -369,13 +370,13 @@ def entry_walk_in():
 			avail_slot_by_status.start = datetime.datetime.now()
 			avail_slot_by_status.end = exit_time
 			duration = (exit_time.hour-avail_slot_by_status.start.hour)*60 + (exit_time.minute-avail_slot_by_status.start.minute)
-			res_no = random.randrange(1,10000,3)               
+			res_no = random.randrange(1,10000,3)
 			res_no = avail_slot_by_status.date.strftime("%B")[0:3]+str(res_no)
 			walk_in = Walk_in(email=email,reservation_no=res_no,car_no=car_no,slot_id=avail_slot_by_status.id)
 			db.session.add(walk_in)
 			db.session.commit()
 			return(redirect(url_for("entry")))
-	return render_template("entry.html",type_customer="walk_in")		
+	return render_template("entry.html",type_customer="walk_in")
 
 
 @app.route("/exit",methods=["GET","POST"])
@@ -384,7 +385,7 @@ def exit():
 	if request.method == "POST":
 		reservation_no = request.form["reservation_no"]
 		car_no = request.form["car_no"]
-		
+
 		booking = Booking.query.filter((reservation_no == reservation_no) | (car_no == car_no)).first()
 		if booking is None:
 			print("Hello")
@@ -394,7 +395,7 @@ def exit():
 			walk_in.slots.end = datetime.datetime.now()
 			walk_in.slots.duration = 0
 			db.session.delete(walk_in)
-		else:	
+		else:
 			print("Hello")
 			booking.slots.status = "AVAILABLE"
 			booking.slots.start = datetime.datetime.now()
@@ -404,7 +405,7 @@ def exit():
 
 		db.session.commit()
 		return redirect(url_for("exit"))
-	return render_template("exit.html")	
+	return render_template("exit.html")
 
 
 
@@ -414,4 +415,4 @@ def exit():
 
 if __name__ == "__main__" :
 
-	app.run("0.0.0.0")
+	app.run(debug=True)
