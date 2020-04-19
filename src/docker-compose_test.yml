@@ -1,0 +1,9 @@
+web:
+  image: swapnil085/devops:backend_image
+  command: "python ./src/app.py"
+  links:
+   - db
+  ports:
+   - "5000:5000"
+db:
+  image: swapnil085/devops:mysql_image
