@@ -13,5 +13,10 @@ pipeline {
         		sh 'pytest'
         	}
         }
+        stage('Deploy') {
+            steps {
+                build 'RundeckJob'
+            }
+        }
     }
 }
