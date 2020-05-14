@@ -4,6 +4,8 @@ import datetime
 from functools import wraps
 import random
 #import json
+# payment library
+import stripe
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -11,6 +13,10 @@ app.secret_key = "secret"
 from models import db
 db.init_app(app)
 
+#payment keys
+pub_key = "pk_test_E4NxK1kQ5tH2AyX5cg4KpBJp00cWoAiGmY"
+secret_key = "sk_test_e5ol7EOAOMDPiodmDNvJPS1w00sdSPrTnc"
+stripe.api_key = secret_key
 
 from models import *
 
@@ -407,8 +413,21 @@ def exit():
 		return redirect(url_for("exit"))
 	return render_template("exit.html")
 
+#---------------------------------------payment module ----------------------------------------
 
+@app.route("/pay",methods=["GET","POST"])
+def payment():
+	if request.method == "POST":
+		customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
+		charge = stripe.Charge.create(customer=customer.id, amount=100, currency='inr', description='The Product')
 
+		return redirect(url_for('thanks'))
+
+	return render_template("pay.html",pub_key=pub_key)
+
+@app.route('/thanks')
+def thanks():
+    return render_template('thanks.html')
 
 
 #run app
