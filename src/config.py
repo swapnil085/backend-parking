@@ -6,7 +6,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Define the database
-SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@localhost/parking'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@db/parking'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
