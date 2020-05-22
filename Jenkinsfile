@@ -16,7 +16,7 @@ pipeline {
         }
         stage("Archive"){
             steps{
-                sh 'docker login -u=swapnil085 -p=Swapnil123'
+                sh 'docker login -u=swapnil085 -p=Swapnil@123'
                 sh 'docker-compose push'
             }    
         }
