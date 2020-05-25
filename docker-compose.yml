@@ -17,7 +17,7 @@ services:
     hostname: localhost
     image: swapnil085/devops:mysql_image
     ports:
-      - "32000:32000"
+      - "32000:3306"
     environment:
        MYSQL_ROOT_PASSWORD: 123456
        MYSQL_PASSWORD: 123456
