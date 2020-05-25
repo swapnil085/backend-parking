@@ -127,7 +127,7 @@ def book_a_slot(user_id,name):
 		if start_time.day == end_time.day:
 			duration = (end_time.hour-start_time.hour)*60 + (end_time.minute-start_time.minute)
 
-		avail_slot_by_status = Slot.query.filter_by(status = "AVAILABLE").first()
+		avail_slot_by_status = Slot.query.filter_by(status="AVAILABLE").first()
 		if avail_slot_by_status is not None:
 			avail_slot_by_status.status = "RESERVED"
 			avail_slot_by_status.date = date
