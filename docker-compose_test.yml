@@ -1,9 +1,15 @@
 web:
   image: swapnil085/devops:backend_image
-  command: "python ./src/app.py"
+  command: bash -c "python ./src/manage.py db stamp head &&python ./src/manage.py db migrate && python ./src/manage.py db upgrade && python ./src/app.py"
   links:
    - db
   ports:
    - "5000:5000"
 db:
   image: swapnil085/devops:mysql_image
+  ports:
+   -  "32000:3306"
+  environment:
+       MYSQL_ROOT_PASSWORD: 123456
+       MYSQL_PASSWORD: 123456
+       MYSQL_DATABASE: parking
