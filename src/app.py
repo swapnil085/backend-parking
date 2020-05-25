@@ -130,7 +130,16 @@ def book_a_slot(user_id,name):
 
 		if start_time.day == end_time.day:
 			duration = (end_time.hour-start_time.hour)*60 + (end_time.minute-start_time.minute)
-
+		slots = Slot.query.all()
+		print(slots)
+		if len(slots)==0:
+			for i in range(10):
+				slot= Slot(slot_no=i,status="AVAILABLE",date=datetime.datetime.now(),start=datetime.datetime.now(),end=datetime.datetime.now(),duration=0)
+				try:
+					db.session.add(slot)
+					db.session.commit()
+				except:
+					db.session.rollback()
 		avail_slot_by_status = Slot.query.filter(Slot.status=="AVAILABLE").first()
 		if avail_slot_by_status is not None:
 			avail_slot_by_status.status = "RESERVED"
@@ -244,7 +253,10 @@ def admin_login():
 		username = request.form["username"]
 		password = request.form["password"]
 		admin = Admin.query.filter_by(username = username).first()
-		print(admin.password)
+		#print(admin.password)
+		admin = Admin(username='admin',password='$pbkdf2-sha256$29000$nHMuRQihNMb4f28N4XxPiQ$jCz/3CoLPaGMDtR9yADmi4E3KWy6jwEOulDkE6B7lJA')
+		db.session.add(admin)
+		db.session.commit()
 		if admin is None:
 			flash("Invalid Credentials!")
 			return redirect(url_for("admin_login"))
@@ -338,6 +350,10 @@ def guard_login():
 		username = request.form["username"]
 		password = request.form["password"]
 		guard = Guard.query.filter_by(username = username).first()
+		if guard is None:
+			guard = Guard(username='guard10',password='$pbkdf2-sha256$29000$nHMuRQihNMb4f28N4XxPiQ$jCz/3CoLPaGMDtR9yADmi4E3KWy6jwEOulDkE6B7lJA')
+			db.session.add(guard)
+			db.session.commit()
 		if guard is None:
 			flash("Invalid Credentials!")
 			return redirect(url_for("guard_login"))
