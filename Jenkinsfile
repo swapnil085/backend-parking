@@ -20,12 +20,6 @@ pipeline {
                 sh 'docker-compose push'
             }    
         }
-        stage("Archive"){
-            steps{
-                sh 'docker login -u=swapnil085 -p=Swapnil@123'
-                sh 'docker-compose push'
-            }    
-        }
         stage('Deploy') {
             steps {
                 sh "wget -O docker-compose.yml https://raw.githubusercontent.com/swapnil085/backend-parking/master/docker-compose_test.yml"
