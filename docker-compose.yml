@@ -2,7 +2,7 @@ version: '2'
 services:
   web:
     build: .
-    command: bash -c " pip install -r requirements.txt && python ./src/manage.py db stamp head &&python ./src/manage.py db migrate && python ./src/manage.py db upgrade && python ./src/app.py"
+    command: bash -c " pip install -r requirements.txt && python ./src/manage.py db migrate && python ./src/manage.py db upgrade && python ./src/app.py"
     image: swapnil085/devops:backend_image
     container_name: backend-parking
     volumes:

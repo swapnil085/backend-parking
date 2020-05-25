@@ -127,7 +127,7 @@ def book_a_slot(user_id,name):
 		if start_time.day == end_time.day:
 			duration = (end_time.hour-start_time.hour)*60 + (end_time.minute-start_time.minute)
 
-		avail_slot_by_status = Slot.query.filter_by(status="AVAILABLE").first()
+		avail_slot_by_status = Slot.query.filter(Slot.status=="AVAILABLE").first()
 		if avail_slot_by_status is not None:
 			avail_slot_by_status.status = "RESERVED"
 			avail_slot_by_status.date = date
@@ -149,10 +149,10 @@ def book_a_slot(user_id,name):
 			db.session.add(book)
 			db.session.commit()
 		else:
-			available_slot_by_time = Slot.query.filter_by(Slot.end <= start_time ).first()
+			available_slot_by_time = Slot.query.filter(Slot.end <= start_time ).first()
 			if available_slot_by_time is None:
 				flash("No slots available!!")
-				return redirect(url_for("dashboard",user_id=user_id))
+				return redirect(url_for("dashboard",user_id=user_id,name=name))
 			else:
 				available_slot_by_time.status = "RESERVED"
 				available_slot_by_time.date = date
