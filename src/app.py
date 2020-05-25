@@ -7,11 +7,13 @@ import random
 # payment library
 import stripe
 
+
 app = Flask(__name__)
 app.config.from_object("config")
 app.secret_key = "secret"
 from models import db
 db.init_app(app)
+
 
 #payment keys
 pub_key = "pk_test_E4NxK1kQ5tH2AyX5cg4KpBJp00cWoAiGmY"
@@ -23,6 +25,8 @@ from models import *
 
 #import elasticsearch
 from elastic_search import *
+
+
 
 
 @app.route('/')
