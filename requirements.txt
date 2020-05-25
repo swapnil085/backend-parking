@@ -23,3 +23,5 @@ flask-migrate==2.1.1
 license-expression==0.97
 decorator==4.3.0
 stripe==2.48.0
+elasticsearch==7.7.0
+

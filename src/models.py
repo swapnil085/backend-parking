@@ -74,6 +74,8 @@ class Slot(db.Model):
 	def __str__(self):
 		return self.slot_no	
 
+
+
 class Booking(db.Model):
 	__tablename__ = "bookings"
 	id = db.Column(db.Integer,primary_key=True)
@@ -93,7 +95,14 @@ class Booking(db.Model):
 	def __str__(self):
 		return self.car_no
 
-
+	@classmethod
+	def obj2dict(self,obj):
+		d = dict()
+		d['user_id'] = obj.user_id
+		d['slot_id'] = obj.slot_id
+		d['car_no'] = obj.car_no
+		d['reservation_no'] = obj.reservation_no
+		return d
 
 class Feedback(db.Model):
 	__tablename__ = "feedbacks"

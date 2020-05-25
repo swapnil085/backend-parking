@@ -9,10 +9,16 @@ pipeline {
             }
         }
         stage('Test'){
-        	steps{
-        		sh 'pip3 install pytest'
-        		sh 'pytest'
-        	}
+            steps{
+                sh 'pip3 install pytest'
+                sh 'pytest'
+            }
+        }
+        stage("Archive"){
+            steps{
+                sh 'docker login -u=swapnil085 -p=Swapnil@123'
+                sh 'docker-compose push'
+            }    
         }
         stage("Archive"){
             steps{

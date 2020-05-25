@@ -18,7 +18,12 @@ pub_key = "pk_test_E4NxK1kQ5tH2AyX5cg4KpBJp00cWoAiGmY"
 secret_key = "sk_test_e5ol7EOAOMDPiodmDNvJPS1w00sdSPrTnc"
 stripe.api_key = secret_key
 
+#import models
 from models import *
+
+#import elasticsearch
+from elastic_search import *
+
 
 @app.route('/')
 @app.route('/home')
@@ -135,6 +140,12 @@ def book_a_slot(user_id,name):
 			res_no = date.strftime("%B")[0:3]+str(res_no)		#generate reservation number
 
 			book = Booking(user_id = user_id,slot_id= avail_slot_by_status.id,car_no=car_no,reservation_no=res_no)
+			book_dict = Booking.obj2dict(book)
+			try:
+				res = create_index("booking",book_dict)
+				print(res)
+			except:
+				print("Elasticsearch server down!!")
 			db.session.add(book)
 			db.session.commit()
 		else:
@@ -149,6 +160,9 @@ def book_a_slot(user_id,name):
 				available_slot_by_time.end = end_time
 				available_slot_by_time.duration = duration
 				book = Booking(user_id = user_id,slot_id= avail_slot_by_time.id,car_no=car_no,reservation_no=res_no)
+				book_dict = Booking.obj2dict(book)
+				res = create_index("booking",book_dict)
+				print(res)
 				db.session.add(book)
 				db.session.commit()
 
@@ -428,6 +442,18 @@ def payment():
 @app.route('/thanks')
 def thanks():
     return render_template('thanks.html')
+
+
+#-----------------------------------elasticsearch------------------------------------
+@app.route('/create/<index_name>',methods=["GET"])
+def create(index_name):
+	create_index(index_name)
+	return "created successfully!!"
+
+@app.route("/delete/<index_name>",methods=["GET"])
+def del_index(index_name):
+	delete_index(index_name)
+	return "successfully Deleted!!"
 
 
 #run app
